@@ -1,0 +1,31 @@
+{
+    "name": "react-headless-accordion",
+    "version": "1.0.0",
+    "description": "A headless nested accordion made with react",
+    "main": "dist/index.cjs.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "author": "Onesine",
+    "license": "MIT",
+    "scripts": {
+        "prebuild": "rm -rf dist",
+        "build": "npm run prebuild && rollup -c"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/onesine/react-headless-accordion"
+    },
+    "keywords": [],
+    "peerDependencies": {
+        "react": "^18.2.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^22.0.1",
+        "@rollup/plugin-node-resolve": "^13.3.0",
+        "@rollup/plugin-typescript": "^9.0.2",
+        "@types/react": "^18.0.21",
+        "rollup": "^2.77.2",
+        "tslib": "^2.4.0",
+        "typescript": "^4.8.4"
+    }
+}
