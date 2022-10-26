@@ -1,4 +1,4 @@
-# Package doc
+# Still in development
 
 This is simple react package template
 
