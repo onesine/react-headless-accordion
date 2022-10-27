@@ -1,4 +1,4 @@
-import React, { createContext, useRef, useState, useMemo, useCallback, useContext, useEffect } from 'react';
+import React, { createContext, useRef, useState, useMemo, useContext, useEffect } from 'react';
 
 const AccordionContext = createContext({
     accordionRef: null,
@@ -7,26 +7,15 @@ const AccordionContext = createContext({
     transition: null,
     alwaysOpen: false
 });
-const AccordionProvider = ({ children, as, transition, alwaysOpen }) => {
+const Accordion = ({ children, as = "div", transition = undefined, alwaysOpen = false }) => {
     const accordionRef = useRef(null);
     const [items, setItems] = useState({});
     const TagName = useMemo(() => {
-        if (as && ["div", "ul"].includes(as)) {
+        if (as) {
             return as;
         }
         return "div";
     }, [as]);
-    const printTag = useCallback(() => {
-        const div = (React.createElement("div", { ref: accordionRef }, children));
-        switch (TagName) {
-            case "div":
-                return div;
-            case "ul":
-                return (React.createElement("ul", { ref: accordionRef }, children));
-            default:
-                return div;
-        }
-    }, []);
     const value = useMemo(() => {
         return {
             accordionRef,
@@ -36,11 +25,8 @@ const AccordionProvider = ({ children, as, transition, alwaysOpen }) => {
             alwaysOpen
         };
     }, [alwaysOpen, items, transition]);
-    return (React.createElement(AccordionContext.Provider, { value: value }, printTag()));
-};
-
-const Accordion = ({ children, as = "div", transition, alwaysOpen = false }) => {
-    return (React.createElement(AccordionProvider, { as: as, transition: transition, alwaysOpen: alwaysOpen }, children));
+    return (React.createElement(AccordionContext.Provider, { value: value },
+        React.createElement(TagName, null, children)));
 };
 
 const AccordionItemContext = createContext({
@@ -53,7 +39,7 @@ const AccordionItemContext = createContext({
     toggle: () => { },
     isActive: false,
 });
-const AccordionItemProvider = ({ children, isActive }) => {
+const AccordionItem = ({ children, isActive = false }) => {
     const { accordionRef, items, setItems, transition, alwaysOpen } = useContext(AccordionContext);
     const [active, setActive] = useState(false);
     const hash = useMemo(() => {
@@ -76,18 +62,14 @@ const AccordionItemProvider = ({ children, isActive }) => {
             isActive
         };
     }, [accordionRef, active, alwaysOpen, hash, isActive, items, transition]);
-    return (React.createElement(AccordionItemContext.Provider, { value: value }, children));
-};
-
-const AccordionItem = ({ children, isActive = false }) => {
-    return (React.createElement(AccordionItemProvider, { isActive: isActive }, children));
+    return (React.createElement(AccordionItemContext.Provider, { value: value }, typeof children === "function" ? children({ open: active }) : children));
 };
 
 const AccordionHeader = ({ children, as = "button", className = "", href = "", onClick }) => {
-    const { hash, active, toggle, items, alwaysOpen, isActive } = useContext(AccordionItemContext);
+    const { hash, toggle, items, alwaysOpen, isActive } = useContext(AccordionItemContext);
     const ref = useRef(null);
     const TagName = useMemo(() => {
-        if (["button", "div", "li", "ol", "a"].includes(as)) {
+        if (as) {
             return as;
         }
         return "button";
@@ -172,29 +154,16 @@ const AccordionHeader = ({ children, as = "button", className = "", href = "", o
         }
         return () => { };
     }, [TagName, alwaysOpen, items, onClick, toggle]);
-    const button = useMemo(() => {
-        return (React.createElement("button", { ref: ref, id: `button-${hash}`, "aria-expanded": "false", className: className, "aria-controls": `content-${hash}` }, typeof children === "function" ? children({ open: active }) : children));
-    }, [active]);
-    switch (TagName) {
-        case "button":
-            return button;
-        case "div":
-            return (React.createElement("div", { ref: ref, id: `button-${hash}`, "aria-expanded": "false", className: className, "aria-controls": `content-${hash}` }, typeof children === "function" ? children({ open: active }) : children));
-        case "li":
-            return (React.createElement("li", { ref: ref, id: `button-${hash}`, "aria-expanded": "false", className: className, "aria-controls": `content-${hash}` }, typeof children === "function" ? children({ open: active }) : children));
-        case "ol":
-            return (React.createElement("ol", { ref: ref, id: `button-${hash}`, "aria-expanded": "false", className: className, "aria-controls": `content-${hash}` }, typeof children === "function" ? children({ open: active }) : children));
-        case "a":
-            return (React.createElement("a", { ref: ref, id: `button-${hash}`, href: href, "aria-expanded": "false", className: className, "aria-controls": `content-${hash}` }, typeof children === "function" ? children({ open: active }) : children));
-        default:
-            return button;
+    if (TagName === "a") {
+        return (React.createElement("a", { ref: ref, id: `button-${hash}`, href: href, "aria-expanded": "false", className: className, "aria-controls": `content-${hash}` }, children));
     }
+    return (React.createElement(TagName, { ref: ref, id: `button-${hash}`, "aria-expanded": "false", className: className, "aria-controls": `content-${hash}` }, children));
 };
 
 const AccordionBody = ({ children, as = "div" }) => {
     const { hash, transition } = useContext(AccordionItemContext);
     const TagName = useMemo(() => {
-        if (["div", "ul"].includes(as)) {
+        if (as) {
             return as;
         }
         return "div";
@@ -212,29 +181,13 @@ const AccordionBody = ({ children, as = "div" }) => {
         }
         return defaultData;
     }, [transition]);
-    const div = useMemo(() => {
-        return (React.createElement("div", { id: `content-${hash}`, "aria-labelledby": `button-${hash}`, style: {
-                maxHeight: "0px",
-                transitionProperty: "max-height",
-                overflow: "hidden",
-                transitionDuration: transitionData.duration,
-                transitionTimingFunction: transitionData.timingFunction
-            } }, children));
-    }, [transitionData, hash]);
-    switch (TagName) {
-        case "div":
-            return div;
-        case "ul":
-            return (React.createElement("ul", { id: `content-${hash}`, "aria-labelledby": `button-${hash}`, style: {
-                    maxHeight: "0px",
-                    transitionProperty: "max-height",
-                    overflow: "hidden",
-                    transitionDuration: transitionData.duration,
-                    transitionTimingFunction: transitionData.timingFunction
-                } }, children));
-        default:
-            return div;
-    }
+    return (React.createElement(TagName, { id: `content-${hash}`, "aria-labelledby": `button-${hash}`, style: {
+            maxHeight: "0px",
+            transitionProperty: "max-height",
+            overflow: "hidden",
+            transitionDuration: transitionData.duration,
+            transitionTimingFunction: transitionData.timingFunction
+        } }, children));
 };
 
 export { Accordion, AccordionBody, AccordionHeader, AccordionItem };

@@ -1,22 +1,20 @@
-import React, {useRef, useContext, useMemo, useEffect, useCallback} from "react";
-import {AccordionItemContext} from "./AccordionItemProvider";
-
-type Tag = "button" | "div" | "li" | "ol" | "a";
+import React, {useRef, useContext, useMemo, useEffect} from "react";
+import {AccordionItemContext} from "./AccordionItem";
 
 interface Props {
-    children: JSX.Element | Function,
-    as?: Tag,
+    children: JSX.Element,
+    as?: string,
     className?: string,
     href?: string,
     onClick?: (e: Event) => void
 }
 
 const AccordionHeader: React.FC<Props> = ({children, as = "button", className = "", href = "", onClick}) => {
-    const {hash, active, toggle, items, alwaysOpen, isActive} = useContext(AccordionItemContext);
+    const {hash, toggle, items, alwaysOpen, isActive} = useContext(AccordionItemContext);
     const ref = useRef(null);
 
-    const TagName = useMemo(() => {
-        if(["button", "div", "li", "ol", "a"].includes(as)) {
+    const TagName: any = useMemo(() => {
+        if(as) {
             return as;
         }
         return "button";
@@ -117,75 +115,32 @@ const AccordionHeader: React.FC<Props> = ({children, as = "button", className = 
 
     }, [TagName, alwaysOpen, items, onClick, toggle]);
 
-    const button = useMemo(() => {
-        return (
-            <button
+    if (TagName === "a") {
+        return  (
+            <a
                 ref={ref}
                 id={`button-${hash}`}
+                href={href}
                 aria-expanded="false"
                 className={className}
                 aria-controls={`content-${hash}`}
             >
-                {typeof children === "function" ? children({open: active}) : children}
-            </button>
-        )
-    }, [active]);
-
-    switch (TagName) {
-        case "button":
-            return button;
-        case "div":
-            return (
-                <div
-                    ref={ref}
-                    id={`button-${hash}`}
-                    aria-expanded="false"
-                    className={className}
-                    aria-controls={`content-${hash}`}
-                >
-                    {typeof children === "function" ? children({open: active}) : children}
-                </div>
-            );
-        case "li":
-            return (
-                <li
-                    ref={ref}
-                    id={`button-${hash}`}
-                    aria-expanded="false"
-                    className={className}
-                    aria-controls={`content-${hash}`}
-                >
-                    {typeof children === "function" ? children({open: active}) : children}
-                </li>
-            );
-        case "ol":
-            return (
-                <ol
-                    ref={ref}
-                    id={`button-${hash}`}
-                    aria-expanded="false"
-                    className={className}
-                    aria-controls={`content-${hash}`}
-                >
-                    {typeof children === "function" ? children({open: active}) : children}
-                </ol>
-            );
-        case "a":
-            return  (
-                <a
-                    ref={ref}
-                    id={`button-${hash}`}
-                    href={href}
-                    aria-expanded="false"
-                    className={className}
-                    aria-controls={`content-${hash}`}
-                >
-                    {typeof children === "function" ? children({open: active}) : children}
-                </a>
-            );
-        default :
-            return button;
+                {children}
+            </a>
+        );
     }
+
+    return  (
+        <TagName
+            ref={ref}
+            id={`button-${hash}`}
+            aria-expanded="false"
+            className={className}
+            aria-controls={`content-${hash}`}
+        >
+            {children}
+        </TagName>
+    );
 };
 
 

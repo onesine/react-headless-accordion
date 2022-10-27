@@ -1,8 +1,7 @@
 import React from "react";
-declare type Tag = "button" | "div" | "li" | "ol" | "a";
 interface Props {
-    children: JSX.Element | Function;
-    as?: Tag;
+    children: JSX.Element;
+    as?: string;
     className?: string;
     href?: string;
     onClick?: (e: Event) => void;
