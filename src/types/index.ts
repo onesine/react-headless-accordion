@@ -17,7 +17,7 @@ export interface AccordionType {
 
 export interface AccordionItemProps {
     children: JSX.Element,
-    isActive: boolean
+    isActive?: boolean
 }
 
 export interface Items {

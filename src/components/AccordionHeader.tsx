@@ -30,8 +30,8 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
 
     useEffect(() => {
         if (isActive && ref && ref.current) {
-            const button = ref.current as HTMLElement;
             toggle()
+            const button = ref.current as HTMLElement;
             button.setAttribute("aria-expanded", "true");
             const content = document.querySelector<HTMLElement>(`#${button.getAttribute('aria-controls')}`);
             if (content) {
@@ -125,6 +125,8 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
 
     }, [TagName, alwaysOpen, items, onClick, toggle]);
 
+    console.log("type:", typeof children);
+
     const button = useMemo(() => {
         return (
             <button
@@ -156,7 +158,7 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
             );
         case Tag.li:
             return (
-                <div
+                <li
                     ref={ref}
                     id={`button-${hash}`}
                     aria-expanded="false"
@@ -164,11 +166,11 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
                     aria-controls={`content-${hash}`}
                 >
                     {typeof children === "function" ? children({open: active}) : children}
-                </div>
+                </li>
             );
         case Tag.ol:
             return (
-                <div
+                <ol
                     ref={ref}
                     id={`button-${hash}`}
                     aria-expanded="false"
@@ -176,7 +178,7 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
                     aria-controls={`content-${hash}`}
                 >
                     {typeof children === "function" ? children({open: active}) : children}
-                </div>
+                </ol>
             );
         case Tag.a:
             return  (

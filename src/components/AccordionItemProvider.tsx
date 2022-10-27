@@ -10,7 +10,7 @@ interface AccordionItemStore {
     toggle: () => void,
     transition?: Transition | null,
     alwaysOpen?: boolean,
-    isActive: boolean
+    isActive?: boolean
 }
 
 export const AccordionItemContext = createContext<AccordionItemStore>({

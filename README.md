@@ -1,6 +1,6 @@
 # Still in development
 
-This is simple react package template
+Beta in development
 
 Created with:
 - **React**,
