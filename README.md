@@ -1,4 +1,4 @@
-# 📦 React tailwindcss select
+# 📦 React headless accordion
 React-headless-accordion is a set of simple components ready to be inserted into your project. These unstyled components allow you to make a nested chord that matches the style you want.
 
 ##  Features
