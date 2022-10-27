@@ -22,8 +22,8 @@ export const AccordionProvider: React.FC<AccordionType> = ({children, as, transi
     const [items, setItems] = useState<Items>({});
 
     const TagName = useMemo(() => {
-        if(as && Tag[as]) {
-            return as.toString();
+        if(as && ["div", "ul"].includes(as)) {
+            return as;
         }
         return "div";
     }, [as]);

@@ -7,12 +7,12 @@ interface Props {
     as?: Tag
 }
 
-const AccordionBody: React.FC<Props> = ({children, as = Tag.div}) => {
+const AccordionBody: React.FC<Props> = ({children, as = "div"}) => {
     const {hash, transition} = useContext(AccordionItemContext);
 
     const TagName = useMemo(() => {
-        if(as && Tag[as]) {
-            return as.toString();
+        if(["div", "ul"].includes(as)) {
+            return as;
         }
         return "div";
     }, [as]);
@@ -51,7 +51,7 @@ const AccordionBody: React.FC<Props> = ({children, as = Tag.div}) => {
                 {children}
             </div>
         )
-    }, []);
+    }, [transitionData, hash]);
 
     switch (TagName) {
         case "div":

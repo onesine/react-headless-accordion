@@ -3,10 +3,7 @@ export interface Transition {
     timingFunction?: string
 }
 
-export enum Tag {
-    div = "div",
-    ul = "ul",
-}
+export type Tag = "div" | "ul";
 
 export interface AccordionType {
     children: JSX.Element,

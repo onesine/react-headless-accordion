@@ -1,13 +1,7 @@
 import React, {useRef, useContext, useMemo, useEffect, useCallback} from "react";
 import {AccordionItemContext} from "./AccordionItemProvider";
 
-export enum Tag {
-    button = "button",
-    div = "div",
-    li = "li",
-    ol = "ol",
-    a = "a",
-}
+type Tag = "button" | "div" | "li" | "ol" | "a";
 
 interface Props {
     children: JSX.Element | Function,
@@ -17,12 +11,12 @@ interface Props {
     onClick?: (e: Event) => void
 }
 
-const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className = "", href = "", onClick}) => {
+const AccordionHeader: React.FC<Props> = ({children, as = "button", className = "", href = "", onClick}) => {
     const {hash, active, toggle, items, alwaysOpen, isActive} = useContext(AccordionItemContext);
     const ref = useRef(null);
 
     const TagName = useMemo(() => {
-        if(as && Tag[as]) {
+        if(["button", "div", "li", "ol", "a"].includes(as)) {
             return as;
         }
         return "button";
@@ -83,12 +77,12 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
                     // Close content already open
                     const buttons = button.parentNode?.querySelectorAll<HTMLElement>(`:scope > ${TagName}[aria-expanded='true']`);
                     if (buttons) {
-                        buttons.forEach(button => {
-                            if (button && button !== ref.current) {
-                                const id = button.id.split("-")[1];
+                        buttons.forEach(item => {
+                            if (item && item !== button) {
+                                const id = item.id.split("-")[1];
                                 items[id](false);
-                                toggleButton(button);
-                                const content = document.querySelector<HTMLDivElement | HTMLUListElement>(`#${button.getAttribute('aria-controls')}`);
+                                toggleButton(item);
+                                const content = document.querySelector<HTMLDivElement | HTMLUListElement>(`#${item.getAttribute('aria-controls')}`);
                                 if (content) {
                                     toggleContent(content);
                                 }
@@ -114,18 +108,14 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
             }
 
             return () => {
-                if (ref && ref.current) {
-                    if (button) {
-                        button.removeEventListener('click', showAccordion);
-                    }
+                if (button) {
+                    button.removeEventListener('click', showAccordion);
                 }
             };
         }
         return () => {}
 
     }, [TagName, alwaysOpen, items, onClick, toggle]);
-
-    console.log("type:", typeof children);
 
     const button = useMemo(() => {
         return (
@@ -139,12 +129,12 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
                 {typeof children === "function" ? children({open: active}) : children}
             </button>
         )
-    }, []);
+    }, [active]);
 
     switch (TagName) {
-        case Tag.button:
+        case "button":
             return button;
-        case Tag.div:
+        case "div":
             return (
                 <div
                     ref={ref}
@@ -156,7 +146,7 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
                     {typeof children === "function" ? children({open: active}) : children}
                 </div>
             );
-        case Tag.li:
+        case "li":
             return (
                 <li
                     ref={ref}
@@ -168,7 +158,7 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
                     {typeof children === "function" ? children({open: active}) : children}
                 </li>
             );
-        case Tag.ol:
+        case "ol":
             return (
                 <ol
                     ref={ref}
@@ -180,7 +170,7 @@ const AccordionHeader: React.FC<Props> = ({children, as = Tag.button, className 
                     {typeof children === "function" ? children({open: active}) : children}
                 </ol>
             );
-        case Tag.a:
+        case "a":
             return  (
                 <a
                     ref={ref}
