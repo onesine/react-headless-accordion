@@ -21,10 +21,11 @@ interface Props {
     children: JSX.Element,
     as?: string,
     transition?: Transition,
-    alwaysOpen?: boolean
+    alwaysOpen?: boolean,
+    className?: string
 }
 
-export const Accordion: React.FC<Props> = ({children , as = "div", transition = undefined , alwaysOpen = false}) => {
+export const Accordion: React.FC<Props> = ({children , as = "div", className = "", transition = undefined , alwaysOpen = false}) => {
     const accordionRef = useRef(null);
     const [items, setItems] = useState<Items>({});
 
@@ -47,7 +48,7 @@ export const Accordion: React.FC<Props> = ({children , as = "div", transition = 
 
     return (
         <AccordionContext.Provider value={value}>
-            <TagName>
+            <TagName className={className}>
                 {children}
             </TagName>
         </AccordionContext.Provider>
