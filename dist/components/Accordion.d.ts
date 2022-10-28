@@ -13,6 +13,7 @@ interface Props {
     as?: string;
     transition?: Transition;
     alwaysOpen?: boolean;
+    className?: string;
 }
 export declare const Accordion: React.FC<Props>;
 export default Accordion;

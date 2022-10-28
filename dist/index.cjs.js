@@ -15,7 +15,7 @@ const AccordionContext = React.createContext({
     transition: null,
     alwaysOpen: false
 });
-const Accordion = ({ children, as = "div", transition = undefined, alwaysOpen = false }) => {
+const Accordion = ({ children, as = "div", className = "", transition = undefined, alwaysOpen = false }) => {
     const accordionRef = React.useRef(null);
     const [items, setItems] = React.useState({});
     const TagName = React.useMemo(() => {
@@ -34,7 +34,7 @@ const Accordion = ({ children, as = "div", transition = undefined, alwaysOpen = 
         };
     }, [alwaysOpen, items, transition]);
     return (React__default["default"].createElement(AccordionContext.Provider, { value: value },
-        React__default["default"].createElement(TagName, null, children)));
+        React__default["default"].createElement(TagName, { className: className }, children)));
 };
 
 const AccordionItemContext = React.createContext({
