@@ -1,6 +1,6 @@
 {
     "name": "react-headless-accordion",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "A headless nested accordion made with react",
     "main": "dist/index.cjs.js",
     "module": "dist/index.esm.js",
