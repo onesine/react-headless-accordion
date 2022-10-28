@@ -12,7 +12,7 @@ interface AccordionItemStore {
 }
 export declare const AccordionItemContext: React.Context<AccordionItemStore>;
 export interface Props {
-    children: JSX.Element | Function;
+    children: JSX.Element | JSX.Element[] | Function;
     isActive?: boolean;
 }
 declare const AccordionItem: React.FC<Props>;

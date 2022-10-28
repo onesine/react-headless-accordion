@@ -2,7 +2,7 @@ import React, {useContext, useMemo} from "react";
 import {AccordionItemContext} from "./AccordionItem";
 
 interface Props {
-    children: JSX.Element,
+    children: JSX.Element | JSX.Element[],
     as?: string
 }
 

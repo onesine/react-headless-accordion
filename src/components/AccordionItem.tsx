@@ -25,7 +25,7 @@ export const AccordionItemContext = createContext<AccordionItemStore>({
 });
 
 export interface Props {
-    children: JSX.Element | Function,
+    children: JSX.Element | JSX.Element[] | Function,
     isActive?: boolean,
 }
 

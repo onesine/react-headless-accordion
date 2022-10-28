@@ -18,7 +18,7 @@ export const AccordionContext = createContext<AccordionStore>({
 });
 
 interface Props {
-    children: JSX.Element,
+    children: JSX.Element | JSX.Element[],
     as?: string,
     transition?: Transition,
     alwaysOpen?: boolean,

@@ -1,6 +1,6 @@
 import React from "react";
 interface Props {
-    children: JSX.Element;
+    children: JSX.Element | JSX.Element[];
     as?: string;
     className?: string;
     href?: string;
