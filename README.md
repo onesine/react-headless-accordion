@@ -17,7 +17,7 @@ With react-headless-accordion we only focus on the style of the accordion rather
 </p>
 
 ## Examples of online usage
-You can find examples of use at [here](https://demo-react-tailwindcss-select.vercel.app/)
+You can find examples of use at [here](https://react-nested-accordion.vercel.app/)
 
 ## Install
 You can use yarn
