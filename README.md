@@ -244,9 +244,10 @@ To animate the opening/closing of the accordion, use the Props transition availa
 
 ### AccordionBody
 
-| Props | Type     | Default  | Description                                               |
-|-------|----------|----------|-----------------------------------------------------------|
-| `as`  | `String` | `button` | The HTML tag that will be used to render `AccordionBody`. |
+| Props       | Type     | Default  | Description                                               |
+|-------------|----------|----------|-----------------------------------------------------------|
+| `as`        | `String` | `button` | The HTML tag that will be used to render `AccordionBody`. |
+| `className` | `String` | `button` | CSS classes to style the component. `AccordionBody`.      |
 
 ## Contributing
 Got ideas on how to make this better? Open an issue!

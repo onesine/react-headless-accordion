@@ -4,9 +4,10 @@ import {AccordionItemContext} from "./AccordionItem";
 interface Props {
     children: JSX.Element | JSX.Element[],
     as?: string
+    className?: string
 }
 
-const AccordionBody: React.FC<Props> = ({children, as = "div"}) => {
+const AccordionBody: React.FC<Props> = ({children, as = "div", className = ""}) => {
     const {hash, transition} = useContext(AccordionItemContext);
 
     const TagName: any = useMemo(() => {
@@ -36,6 +37,7 @@ const AccordionBody: React.FC<Props> = ({children, as = "div"}) => {
         <TagName
             id={`content-${hash}`}
             aria-labelledby={`button-${hash}`}
+            className={className}
             style={
                 {
                     maxHeight: "0px",
